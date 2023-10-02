@@ -1,19 +1,16 @@
 import { Card } from "react-bootstrap";
 import PriceComponent from "./PriceComponent";
 import Youtube from "./Youtube";
-import { useSelector } from "react-redux";
-import { partSelectSelector } from "../reducers/selector";
+import { Part } from "../Interfaces/Part";
 
-export default function PartDetail() {
-    const part = useSelector(partSelectSelector);
-
+export default function PartDetail({ myPartDetail }: { myPartDetail: Part }) {
     return (
         <Card className="text-start" style={{ width: "18rem" }}>
             <Card.Body>
-                <Card.Title>{part.title}</Card.Title>
-                <Card.Text>{part.description}</Card.Text>
+                <Card.Title>{myPartDetail.title}</Card.Title>
+                <Card.Text>{myPartDetail.description}</Card.Text>
             </Card.Body>
-            {part.visual_type === "img" ? <Card.Img variant="top" src={part.visual_src} /> : <Youtube url={part.visual_src} />}
+            {myPartDetail.visual_type === "img" ? <Card.Img variant="top" src={myPartDetail.visual_src} /> : <Youtube url={myPartDetail.visual_src} />}
             <Card.Body>
                 <PriceComponent price="100" />
             </Card.Body>

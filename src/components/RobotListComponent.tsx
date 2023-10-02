@@ -1,15 +1,11 @@
 import RobotComponent from "./RobotComponent";
-import { useSelector } from "react-redux";
 import { Robot } from "../Interfaces/Robot";
-import { robotListSelector } from "../reducers/selector";
 
-export default function RobotListComponent() {
-    const robotList = useSelector(robotListSelector);
-
+export default function RobotListComponent({ robotList, robotSelected, setSelected }: { robotList: Robot[], robotSelected?: Robot, setSelected: (robot: Robot) => void }) {
     return (
         <div className="text-start d-flex flex-column gap-3">
             {robotList.map((robot: Robot) => (
-                <RobotComponent robot={robot} key={robot.id} />
+                <RobotComponent robot={robot} key={robot.id} robotSelected={robotSelected} setSelected={setSelected} />
             ))}
         </div>
     );

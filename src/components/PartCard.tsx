@@ -2,21 +2,10 @@ import { Card, Table } from "react-bootstrap";
 import { Part } from "../Interfaces/Part";
 import Label from "./Label";
 import RowPrint from "./Row";
-import { useDispatch, useSelector } from "react-redux";
-import { selectPart } from "../actions";
-import { partSelectSelector } from "../reducers/selector";
 
-export default function PartCard({ myPart }: { myPart: Part }) {
-    const selectedPart = useSelector(partSelectSelector);
-    const dispatch = useDispatch()
-
-    const onClickValue = () => {
-        console.log(myPart)
-        dispatch(selectPart(myPart))
-    }
-
+export default function PartCard({ myPart, selectedPart, setSelected }: { myPart: Part, selectedPart?: Part, setSelected: (part: Part) => void }) {
     return (
-        <Card className={`border ${selectedPart !== null && selectedPart !== undefined && selectedPart.id === myPart.id && "border-primary"}`} style={{ width: "18rem" }} onClick={() => onClickValue()}>
+        <Card className={`border ${selectedPart !== null && selectedPart !== undefined && selectedPart.id === myPart.id && "border-primary"}`} style={{ width: "18rem" }} onClick={() => setSelected(myPart)}>
             <Label label={`Part ${myPart.id}`} />
             <Card.Body>
                 <Table>
