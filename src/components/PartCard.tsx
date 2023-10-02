@@ -2,10 +2,13 @@ import { Card, Table } from "react-bootstrap";
 import { Part } from "../Interfaces/Part";
 import Label from "./Label";
 import RowPrint from "./Row";
+import { LevelContext } from "../context/context";
+import { useContext } from "react";
 
-export default function PartCard({ myPart, selectedPart, setSelected }: { myPart: Part, selectedPart?: Part, setSelected: (part: Part) => void }) {
+export default function PartCard({ myPart }: { myPart: Part }) {
+    const { state, dispatch } = useContext(LevelContext);
     return (
-        <Card className={`border ${selectedPart !== null && selectedPart !== undefined && selectedPart.id === myPart.id && "border-primary"}`} style={{ width: "18rem" }} onClick={() => setSelected(myPart)}>
+        <Card className={`border ${state.partSelected !== null && state.partSelected !== undefined && state.partSelected.id === myPart.id && "border-primary"}`} style={{ width: "18rem" }} onClick={() => dispatch({ type: 'SET_PART_SELECTED', payload: myPart })}>
             <Label label={`Part ${myPart.id}`} />
             <Card.Body>
                 <Table>

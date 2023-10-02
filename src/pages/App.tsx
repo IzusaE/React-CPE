@@ -1,33 +1,24 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import RobotListComponent from "../components/RobotListComponent";
 import PartList from "../components/PartList";
 import PartDetail from "../components/PartDetail";
 import { Part } from "../Interfaces/Part";
 import { Robot } from "../Interfaces/Robot";
+import { LevelContext } from "../context/context";
 
 export default function App() {
-    const [robotList, setRobotList] = useState<Robot[]>([]);
-    const [selecetdRobot, setSelectedRobot] = useState<Robot>();
-
-    const [partList, setPartList] = useState<Part[]>([]);
-    const [selectedPart, setSelectedPart] = useState<Part>();
-
-    const [filteredPartList, setFilteredPartList] = useState<Part[]>([]);
+    const { state, dispatch } = useContext(LevelContext);
     
     useEffect(() => {
         const fetchData = async () => {
             const response = await axios.get('https://www.robots.loiclegoff.com/robots');
-            setRobotList(response.data);
+            dispatch({ type: 'SET_ROBOTS', payload: response.data });
             const resp = await axios.get('https://www.robots.loiclegoff.com/parts');
-            setPartList(resp.data);
+            dispatch({ type: 'SET_PARTS', payload: resp.data });
         }
         fetchData();
     }, []);
-
-    useEffect(() => {
-        setFilteredPartList(partList.filter((part: Part) => selecetdRobot?.parts.includes(part.id)));
-    }, [selecetdRobot]);
 
     return (
         <div className="App m-4">
@@ -35,13 +26,13 @@ export default function App() {
             <div className="container text-center">
                 <div className="row">
                     <div className="col">
-                        <RobotListComponent robotList={robotList} robotSelected={selecetdRobot} setSelected={setSelectedRobot} />
+                        <RobotListComponent />
                     </div>
                     <div className="col">
-                        {selecetdRobot && <PartList filteredPartList={filteredPartList} selectedPart={selectedPart} setSelected={setSelectedPart} />}
+                        {state.robotSelected && <PartList />}
                     </div>
                     <div className="col">
-                        {selectedPart && <PartDetail myPartDetail={selectedPart}  />}
+                        {state.partSelected && <PartDetail  />}
                     </div>
                 </div>
             </div>
