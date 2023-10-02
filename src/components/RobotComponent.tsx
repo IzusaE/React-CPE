@@ -8,7 +8,7 @@ import { LevelContext } from "../context/context";
 export default function RobotComponent({ myRobot }: { myRobot: Robot }) {
     const { state, dispatch } = useContext(LevelContext);
     return (
-        <Card className={`border ${state.robotSelected !== null && state.robotSelected !== undefined && state.robotSelected.id === myRobot.id && "border-primary"}`} style={{ width: "18rem" }} onClick={() => dispatch({ type: 'SET_ROBOT_SELECTED', payload: myRobot })}>
+        <Card className={`border ${state.robotSelected  && state.robotSelected.id === myRobot.id && "border-primary"}`} style={{ width: "18rem" }} onClick={() => dispatch({ type: 'SET_ROBOT_SELECTED', payload: myRobot })}>
             <Label label="Robot description" />
             <Card.Body>
                 <Card.Title>{myRobot.title}</Card.Title>

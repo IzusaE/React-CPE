@@ -1,4 +1,4 @@
-import { createContext, useReducer } from "react";
+import { createContext, useReducer, useMemo } from "react";
 import { Robot } from "../Interfaces/Robot";
 import { Part } from "../Interfaces/Part";
 import appReducer from "../reducers/myReducer";
@@ -10,18 +10,23 @@ interface APIContextValue {
     partSelected: Part | null;
 }
 
-export const LevelContext = createContext<{ state: any; dispatch: React.Dispatch<any> }>({
-    state: {},
+const initialState: APIContextValue = {
+    robots: [],
+    robotSelected: null,
+    parts: [],
+    partSelected: null,
+};  
+
+
+export const LevelContext = createContext<{ state: APIContextValue; dispatch: React.Dispatch<any> }>({
+    state: initialState,
     dispatch: () => null,
 });
 
 export function Provider({ children }: any) {
-    const [state, dispatch] = useReducer(appReducer, {
-        robots: [],
-        robotSelected: null,
-        parts: [],
-        partSelected: null,
-    });
+    const [state, dispatch] = useReducer(appReducer, initialState);
 
-    return <LevelContext.Provider value={{ state, dispatch }}>{children}</LevelContext.Provider>;
+    const memoValue= useMemo(() =>({state, dispatch}), [state, dispatch])
+
+    return <LevelContext.Provider value={memoValue}>{children}</LevelContext.Provider>;
 }
